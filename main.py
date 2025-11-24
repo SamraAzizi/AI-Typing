@@ -15,3 +15,26 @@ OLLAMA_CONFIG = {
     "keep_alive": "5m",
     "stream": False,
 }
+PROMPT_TEMPLATE = Template(
+    """Fix all typos and casing and punctuation in this text, but preserve all new line characters:
+
+$text
+
+Return only the corrected text, don't include a preamble.
+"""
+)
+
+
+def fix_text(text):
+    prompt = PROMPT_TEMPLATE.substitute(text=text)
+    response = httpx.post(
+        OLLAMA_ENDPOINT,
+        json={"prompt": prompt, **OLLAMA_CONFIG},
+        headers={"Content-Type": "application/json"},
+        timeout=10,
+    )
+    if response.status_code != 200:
+        print("Error", response.status_code)
+        return None
+    return response.json()["response"].strip()
+
