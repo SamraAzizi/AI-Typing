@@ -38,3 +38,32 @@ def fix_text(text):
         return None
     return response.json()["response"].strip()
 
+
+def fix_current_line():
+    # macOS short cut to select current line: Cmd+Shift+Left
+    controller.press(Key.cmd)
+    controller.press(Key.shift)
+    controller.press(Key.left)
+
+    controller.release(Key.cmd)
+    controller.release(Key.shift)
+    controller.release(Key.left)
+
+    fix_selection()
+
+
+def fix_selection():
+    # 1. Copy selection to clipboard
+    with controller.pressed(Key.cmd):
+        controller.tap("c")
+
+    # 2. Get the clipboard string
+    time.sleep(0.1)
+    text = pyperclip.paste()
+
+    # 3. Fix string
+    if not text:
+        return
+    fixed_text = fix_text(text)
+    if not fixed_text:
+        return
