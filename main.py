@@ -15,6 +15,7 @@ OLLAMA_CONFIG = {
     "keep_alive": "5m",
     "stream": False,
 }
+
 PROMPT_TEMPLATE = Template(
     """Fix all typos and casing and punctuation in this text, but preserve all new line characters:
 
@@ -67,3 +68,23 @@ def fix_selection():
     fixed_text = fix_text(text)
     if not fixed_text:
         return
+
+    # 4. Paste the fixed string to the clipboard
+    pyperclip.copy(fixed_text)
+    time.sleep(0.1)
+
+    # 5. Paste the clipboard and replace the selected text
+    with controller.pressed(Key.cmd):
+        controller.tap("v")
+
+
+def on_f9():
+    fix_current_line()
+
+
+def on_f10():
+    fix_selection()
+
+
+with keyboard.GlobalHotKeys({"<101>": on_f9, "<109>": on_f10}) as h:
+    h.join()
