@@ -1,8 +1,8 @@
-# AI Typing Assistant 🚀
+# AI Typing Assistant 
 
 A smart Python script that uses local AI to fix typos and formatting as you type!
 
-## ✨ What It Does
+##  What It Does
 - Press **F9** → Fixes the current line
 - Press **F10** → Fixes selected text
 - Uses your local AI (Ollama) to correct typos, casing, and punctuation
